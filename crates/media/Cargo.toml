@@ -1,0 +1,11 @@
+[package]
+name = "videocut-media"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "FFmpeg ingest, proxies, thumbnails, waveforms, and sequence export for VideoCut"
+
+[dependencies]
+serde_json.workspace = true
+thiserror.workspace = true
+videocut-model = { path = "../model" }

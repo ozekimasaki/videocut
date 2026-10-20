@@ -1,0 +1,14 @@
+[package]
+name = "videocut-color"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Color wheels, RGB curves, HSL, and cube LUT effects for VideoCut"
+publish = false
+
+[dependencies]
+thiserror.workspace = true
+videocut-model = { path = "../model" }
+
+[dev-dependencies]
+serde_json.workspace = true

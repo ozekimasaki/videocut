@@ -1,0 +1,34 @@
+[package]
+name = "videocut-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "VideoCut desktop shell"
+publish = false
+
+[lib]
+name = "videocut_desktop"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "videocut"
+path = "src/main.rs"
+required-features = ["gui"]
+
+[features]
+default = []
+gui = ["dep:tauri", "dep:tauri-plugin-dialog"]
+
+[dependencies]
+base64 = "0.22"
+serde.workspace = true
+serde_json.workspace = true
+videocut-interchange = { path = "../../../crates/interchange" }
+videocut-media = { path = "../../../crates/media" }
+videocut-model = { path = "../../../crates/model" }
+videocut-prproj = { path = "../../../crates/prproj" }
+tauri = { version = "2.12.4", optional = true }
+tauri-plugin-dialog = { version = "2.8.3", optional = true }
+
+[build-dependencies]
+tauri-build = { version = "2.7.3" }

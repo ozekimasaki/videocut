@@ -1,0 +1,155 @@
+.vcut-timeline {
+  --vcut-bg: #141414;
+  --vcut-panel: #1b1b1b;
+  --vcut-line: #2c2c2c;
+  --vcut-text: #e6e6e6;
+  --vcut-muted: #9a9a9a;
+  --vcut-video: #2f6f8f;
+  --vcut-audio: #2f7d4f;
+  --vcut-nested: #6d5a32;
+  --vcut-freeze: #4d4d78;
+  --vcut-playhead: #f2c14e;
+  --vcut-marker: #d4656a;
+  --vcut-select: #f4f4f4;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  background: var(--vcut-bg);
+  color: var(--vcut-text);
+  font: 12px/1.4 ui-sans-serif, sans-serif;
+  user-select: none;
+}
+
+.vcut-timeline__toolbar,
+.vcut-timeline__commands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  background: var(--vcut-panel);
+  border-bottom: 1px solid var(--vcut-line);
+}
+
+.vcut-timeline button,
+.vcut-timeline input,
+.vcut-timeline select {
+  background: #262626;
+  color: var(--vcut-text);
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font: inherit;
+}
+
+.vcut-timeline button[aria-pressed="true"] {
+  background: #3c4c58;
+  border-color: #8eb4cc;
+}
+
+.vcut-timeline input {
+  width: 64px;
+}
+
+.vcut-timeline__error {
+  margin: 0;
+  padding: 6px 8px;
+  background: #3a2424;
+  color: #f0c2c2;
+}
+
+.vcut-timeline__scroll {
+  overflow: auto;
+  flex: 1;
+}
+
+.vcut-timeline__ruler,
+.vcut-timeline__track {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  min-height: 28px;
+}
+
+.vcut-timeline__head,
+.vcut-timeline__lane {
+  position: relative;
+  min-height: 28px;
+}
+
+.vcut-timeline__lane {
+  height: 40px;
+  background: #191919;
+  border-top: 1px solid var(--vcut-line);
+}
+
+.vcut-timeline__head {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  background: #202020;
+  border-top: 1px solid var(--vcut-line);
+  border-right: 1px solid var(--vcut-line);
+}
+
+.vcut-timeline__head button {
+  padding: 2px 5px;
+}
+
+.vcut-timeline__clip {
+  position: absolute;
+  top: 6px;
+  height: 28px;
+  border-radius: 3px;
+  padding: 4px 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+.vcut-timeline__clip[data-kind="video"],
+.vcut-timeline__clip[data-kind="media"] {
+  background: var(--vcut-video);
+}
+
+.vcut-timeline__clip[data-kind="audio"] {
+  background: var(--vcut-audio);
+}
+
+.vcut-timeline__clip[data-kind="nested"] {
+  background: var(--vcut-nested);
+}
+
+.vcut-timeline__clip[data-selected="true"] {
+  outline: 1px solid var(--vcut-select);
+}
+
+.vcut-timeline__playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--vcut-playhead);
+  pointer-events: none;
+}
+
+.vcut-timeline__marker {
+  position: absolute;
+  top: 4px;
+  width: 8px;
+  height: 16px;
+  margin-left: -4px;
+  background: var(--vcut-marker);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.vcut-timeline__tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid #333;
+  color: var(--vcut-muted);
+  padding-left: 4px;
+  font-size: 10px;
+}
