@@ -1,0 +1,125 @@
+.vc-export {
+  --vc-bg: #1c1d1f;
+  --vc-raised: #25272b;
+  --vc-border: #3a3d42;
+  --vc-text: #e7e8ea;
+  --vc-muted: #a0a4ab;
+  --vc-accent: #8eb4e8;
+  --vc-danger: #e07a72;
+  --vc-ok: #8fbf9f;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  overflow: auto;
+  background: var(--vc-bg);
+  color: var(--vc-text);
+  color-scheme: dark;
+  font: 12px/1.4 "Segoe UI", system-ui, sans-serif;
+}
+
+.vc-export *,
+.vc-export *::before,
+.vc-export *::after {
+  box-sizing: border-box;
+}
+
+.vc-export__field,
+.vc-export__range {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.vc-export__label,
+.vc-export__range legend {
+  color: var(--vc-muted);
+  padding: 0;
+}
+
+.vc-export__range label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vc-export input[type="text"],
+.vc-export select,
+.vc-export button {
+  font: inherit;
+  color: inherit;
+  background: var(--vc-raised);
+  border: 1px solid var(--vc-border);
+  border-radius: 4px;
+}
+
+.vc-export input[type="text"],
+.vc-export select {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 8px;
+}
+
+.vc-export input:focus,
+.vc-export select:focus,
+.vc-export button:focus-visible {
+  outline: 1px solid var(--vc-accent);
+  outline-offset: 1px;
+}
+
+.vc-export__path {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.vc-export__path input {
+  flex: 1;
+}
+
+.vc-export button {
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.vc-export button:hover {
+  background: #34383d;
+}
+
+.vc-export button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.vc-export__marks {
+  margin: 0;
+  color: var(--vc-muted);
+}
+
+.vc-export__message {
+  margin: 0;
+}
+
+.vc-export__message--error {
+  color: var(--vc-danger);
+}
+
+.vc-export__message--ok {
+  color: var(--vc-ok);
+}
+
+.vc-export__message--muted {
+  color: var(--vc-muted);
+}
+
+.vc-export__submit {
+  align-self: flex-start;
+}
