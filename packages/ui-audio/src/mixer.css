@@ -1,0 +1,143 @@
+.vcut-audio {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 16rem;
+  overflow: auto;
+  background: #1b1b1b;
+  color: #e8e8e8;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 12px;
+}
+
+.vcut-audio__strips {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  min-height: 100%;
+  padding: 12px;
+}
+
+.vcut-audio__strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 4.5rem;
+  padding: 8px 6px;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+}
+
+.vcut-audio__strip--master {
+  margin-left: auto;
+  background: #242424;
+}
+
+.vcut-audio__strip.is-silent {
+  opacity: 0.55;
+}
+
+.vcut-audio__name {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vcut-audio__toggles {
+  display: flex;
+  gap: 4px;
+}
+
+.vcut-audio__toggle {
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 1px solid #555;
+  border-radius: 3px;
+  background: #333;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.vcut-audio__toggle.is-mute {
+  background: #8a5a12;
+  border-color: #d39a3a;
+  color: #fff;
+}
+
+.vcut-audio__toggle.is-solo {
+  background: #8a8412;
+  border-color: #e2d15a;
+  color: #111;
+}
+
+.vcut-audio__meters {
+  display: flex;
+  gap: 3px;
+  height: 7rem;
+}
+
+.vcut-audio-meter {
+  position: relative;
+  width: 0.45rem;
+  height: 100%;
+  background: #111;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.vcut-audio-meter__fill {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(#d4554a 0%, #d4b44a 18%, #3caf62 45%);
+}
+
+.vcut-audio-meter__clip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: #ff5a4a;
+}
+
+.vcut-audio__fader,
+.vcut-audio__pan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.vcut-audio__fader-input {
+  width: 1.2rem;
+  height: 8rem;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  accent-color: #d0d0d0;
+}
+
+.vcut-audio__pan input {
+  width: 3.4rem;
+  accent-color: #d0d0d0;
+}
+
+.vcut-audio__readout {
+  font-variant-numeric: tabular-nums;
+  color: #c8c8c8;
+}
+
+.vcut-audio-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
