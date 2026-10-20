@@ -1,0 +1,12 @@
+[package]
+name = "videocut-interchange"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "OpenTimelineIO, FCPXML, and CMX 3600 EDL interchange for VideoCut"
+
+[dependencies]
+videocut-model = { path = "../model" }
+serde_json.workspace = true
+thiserror.workspace = true
+quick-xml = "0.37"
