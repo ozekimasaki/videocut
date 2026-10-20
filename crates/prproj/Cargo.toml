@@ -1,0 +1,13 @@
+[package]
+name = "videocut-prproj"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Read and write gzip-compressed .prproj XML for VideoCut"
+
+[dependencies]
+videocut-model = { path = "../model" }
+flate2 = "1"
+quick-xml = "0.37"
+serde_json.workspace = true
+thiserror.workspace = true

@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<PremiereData Version="3">
+	<Project ObjectRef="1"/>
+	<Project ObjectID="1" ClassID="62ad66dd-0dcd-42da-a660-6d8fbde94876" Version="45">
+		<Node Version="1">
+			<Properties Version="1">
+				<MZ.VideoCut.Id>proj-demo</MZ.VideoCut.Id>
+			</Properties>
+		</Node>
+		<Name>Demo</Name>
+		<RootProjectItem ObjectURef="uid-root"/>
+	</Project>
+	<RootProjectItem ObjectUID="uid-root" ClassID="1c307a89-9318-47d7-a583-bf2553736543" Version="1">
+		<ProjectItem Version="1">
+			<Node Version="1">
+				<Properties Version="1">
+					<MZ.VideoCut.Id>root</MZ.VideoCut.Id>
+				</Properties>
+			</Node>
+			<Name>Root</Name>
+		</ProjectItem>
+		<ProjectItemContainer Version="1">
+			<Items Version="1">
+				<Item Index="0" ObjectURef="uid-bin-footage"/>
+				<Item Index="1" ObjectURef="uid-item-seq"/>
+			</Items>
+		</ProjectItemContainer>
+	</RootProjectItem>
+	<BinProjectItem ObjectUID="uid-bin-footage" ClassID="dbfd6653-24da-480e-a35e-ba45e9504e4b" Version="1">
+		<ProjectItem Version="1">
+			<Node Version="1">
+				<Properties Version="1">
+					<MZ.VideoCut.Id>bin-footage</MZ.VideoCut.Id>
+				</Properties>
+			</Node>
+			<Name>Footage</Name>
+		</ProjectItem>
+		<ProjectItemContainer Version="1">
+			<Items Version="1">
+				<Item Index="0" ObjectURef="uid-item-interview"/>
+				<Item Index="1" ObjectURef="uid-bin-selects"/>
+			</Items>
+		</ProjectItemContainer>
+	</BinProjectItem>
+	<BinProjectItem ObjectUID="uid-bin-selects" ClassID="dbfd6653-24da-480e-a35e-ba45e9504e4b" Version="1">
+		<ProjectItem Version="1">
+			<Node Version="1">
+				<Properties Version="1">
+					<MZ.VideoCut.Id>bin-selects</MZ.VideoCut.Id>
+				</Properties>
+			</Node>
+			<Name>Selects</Name>
+		</ProjectItem>
+		<ProjectItemContainer Version="1">
+			<Items Version="1"/>
+		</ProjectItemContainer>
+	</BinProjectItem>
+	<ClipProjectItem ObjectUID="uid-item-interview" ClassID="cb4e0ed7-aca1-4171-8525-e3658dec06dd" Version="1">
+		<ProjectItem Version="1">
+			<Node Version="1">
+				<Properties Version="1">
+					<MZ.VideoCut.Id>item-interview</MZ.VideoCut.Id>
+				</Properties>
+			</Node>
+			<Name>interview.mp4</Name>
+		</ProjectItem>
+		<MasterClip ObjectURef="master-media-interview"/>
+	</ClipProjectItem>
+	<ClipProjectItem ObjectUID="uid-item-seq" ClassID="cb4e0ed7-aca1-4171-8525-e3658dec06dd" Version="1">
+		<ProjectItem Version="1">
+			<Node Version="1">
+				<Properties Version="1">
+					<MZ.VideoCut.Id>item-seq</MZ.VideoCut.Id>
+				</Properties>
+			</Node>
+			<Name>Main</Name>
+		</ProjectItem>
+		<MasterClip ObjectURef="master-seq-main"/>
+	</ClipProjectItem>
+	<Media ObjectUID="uid-media-interview" ClassID="7a5c103e-f3ac-4391-b6b4-7cc3d2f9a7ff" Version="30">
+		<Node Version="1">
+			<Properties Version="1">
+				<MZ.VideoCut.Id>media-interview</MZ.VideoCut.Id>
+			</Properties>
+		</Node>
+		<FilePath>C:\media\interview.mp4</FilePath>
+		<ActualMediaFilePath>C:\media\interview.mp4</ActualMediaFilePath>
+		<Title>interview.mp4</Title>
+		<VideoStream ObjectRef="10"/>
+		<AudioStream ObjectRef="11"/>
+	</Media>
+	<VideoStream ObjectID="10" ClassID="a36e4719-3ec6-4a0c-ab11-8b4aab377aa5" Version="13">
+		<FrameRect>0,0,1920,1080</FrameRect>
+		<FrameRate>8467200000</FrameRate>
+		<Duration>508032000000</Duration>
+		<CodecType>h264</CodecType>
+	</VideoStream>
+	<AudioStream ObjectID="11" ClassID="0b5cf52f-2b85-4863-890b-8844b64ecfe9" Version="5">
+		<FrameRate>5292000</FrameRate>
+		<ChannelCount>2</ChannelCount>
+		<Duration>508032000000</Duration>
+		<CodecType>aac</CodecType>
+	</AudioStream>
+	<Media ObjectID="12" ClassID="7a5c103e-f3ac-4391-b6b4-7cc3d2f9a7ff" Version="30">
+		<IsProxy>true</IsProxy>
+		<FilePath>C:\media\interview-proxy.mp4</FilePath>
+		<Title>interview-proxy.mp4</Title>
+	</Media>
+	<VideoMediaSource ObjectID="13" ClassID="e64ddf74-8fac-4682-8aa8-0e0ca2248949" Version="2">
+		<MediaSource Version="3">
+			<Content Version="6">
+				<ProxyMedia ObjectRef="12"/>
+			</Content>
+			<Media ObjectURef="uid-media-interview"/>
+		</MediaSource>
+		<OriginalDuration>508032000000</OriginalDuration>
+	</VideoMediaSource>
+	<AudioMediaSource ObjectID="14" ClassID="f588da05-fc2a-4fbc-9383-74d653b379e3" Version="2">
+		<MediaSource Version="3">
+			<Media ObjectURef="uid-media-interview"/>
+		</MediaSource>
+		<OriginalDuration>508032000000</OriginalDuration>
+	</AudioMediaSource>
+	<MasterClip ObjectUID="master-media-interview" ClassID="fb11c33a-b0a9-4465-aa94-b6d5db2628cf" Version="12">
+		<Name>interview.mp4</Name>
+		<Clips Version="1">
+			<Clip Index="0" ObjectRef="15"/>
+			<Clip Index="1" ObjectRef="16"/>
+		</Clips>
+	</MasterClip>
+	<VideoClip ObjectID="15" ClassID="9308dbef-2440-4acb-9ab2-953b9a4e82ec" Version="9">
+		<Clip Version="14">
+			<OutPoint>508032000000</OutPoint>
+			<InPoint>0</InPoint>
+			<Source ObjectRef="13"/>
+		</Clip>
+	</VideoClip>
+	<AudioClip ObjectID="16" ClassID="b8830d03-de02-41ee-84ec-fe566dc70cd9" Version="8">
+		<Clip Version="14">
+			<OutPoint>508032000000</OutPoint>
+			<InPoint>0</InPoint>
+			<Source ObjectRef="14"/>
+		</Clip>
+	</AudioClip>
+	<VideoSequenceSource ObjectID="17" ClassID="4752dfa9-7a7e-4a3b-a25b-cafde1a8d036" Version="3">
+		<SequenceSource Version="3">
+			<Sequence ObjectURef="uid-seq-main"/>
+		</SequenceSource>
+	</VideoSequenceSource>
+	<VideoClip ObjectID="18" ClassID="9308dbef-2440-4acb-9ab2-953b9a4e82ec" Version="9">
+		<Clip Version="14">
+			<Source ObjectRef="17"/>
+		</Clip>
+	</VideoClip>
+	<MasterClip ObjectUID="master-seq-main" ClassID="fb11c33a-b0a9-4465-aa94-b6d5db2628cf" Version="12">
+		<Name>Main</Name>
+		<Clips Version="1">
+			<Clip Index="0" ObjectRef="18"/>
+		</Clips>
+	</MasterClip>
+	<Sequence ObjectUID="uid-seq-main" ClassID="6a15d903-8739-11d5-af2d-9b7855ad8974" Version="11">
+		<Node Version="1">
+			<Properties Version="1">
+				<MZ.VideoCut.Id>seq-main</MZ.VideoCut.Id>
+				<MZ.Sequence.ZeroPoint>0</MZ.Sequence.ZeroPoint>
+			</Properties>
+		</Node>
+		<Name>Main</Name>
+		<MarkerOwner Version="1">
+			<Markers ObjectRef="40"/>
+		</MarkerOwner>
+		<TrackGroups Version="1">
+			<TrackGroup Version="1" Index="0">
+				<Second ObjectRef="20"/>
+				<First>228cda18-3625-4d2d-951e-348879e4ed93</First>
+			</TrackGroup>
+			<TrackGroup Version="1" Index="1">
+				<Second ObjectRef="21"/>
+				<First>80b8e3d5-6dca-4195-aefb-cb5f407ab009</First>
+			</TrackGroup>
+		</TrackGroups>
+	</Sequence>
+	<VideoTrackGroup ObjectID="20" ClassID="9e9abf7a-0918-49c2-91ae-991b5dde77bb" Version="8">
+		<TrackGroup Version="1">
+			<FrameRate>8467200000</FrameRate>
+			<Tracks Version="1">
+				<Track Index="0" ObjectRef="22"/>
+			</Tracks>
+		</TrackGroup>
+		<FrameRect>0,0,1920,1080</FrameRect>
+	</VideoTrackGroup>
+	<AudioTrackGroup ObjectID="21" ClassID="9b9238b9-53a8-4cc3-b03f-b36246d052e6" Version="6">
+		<TrackGroup Version="1">
+			<FrameRate>5292000</FrameRate>
+			<Tracks Version="1">
+				<Track Index="0" ObjectRef="23"/>
+			</Tracks>
+		</TrackGroup>
+		<NumAdaptiveChannels>2</NumAdaptiveChannels>
+	</AudioTrackGroup>
+	<VideoClipTrack ObjectID="22" ClassID="f68dcd81-8805-11d5-af2d-9bfa89d4ddd4" Version="1">
+		<ClipTrack Version="2">
+			<Track Version="3">
+				<Node Version="1">
+					<Properties Version="1">
+						<MZ.VideoCut.Id>track-v1</MZ.VideoCut.Id>
+						<TL.SQTrackShy>0</TL.SQTrackShy>
+						<MZ.TrackTargeted>1</MZ.TrackTargeted>
+					</Properties>
+				</Node>
+				<IsSyncLocked>true</IsSyncLocked>
+				<Index>0</Index>
+				<MediaType>228cda18-3625-4d2d-951e-348879e4ed93</MediaType>
+				<IsMuted>false</IsMuted>
+				<IsLocked>false</IsLocked>
+			</Track>
+			<TransitionItems Version="3">
+				<TrackItems Version="1">
+					<TrackItem Index="0" ObjectRef="30"/>
+				</TrackItems>
+			</TransitionItems>
+			<ClipItems Version="3">
+				<TrackItems Version="1">
+					<TrackItem Index="0" ObjectRef="24"/>
+					<TrackItem Index="1" ObjectRef="25"/>
+				</TrackItems>
+			</ClipItems>
+		</ClipTrack>
+	</VideoClipTrack>
+	<AudioClipTrack ObjectID="23" ClassID="097f6203-99ae-11d5-84f2-8cf14bde7040" Version="6">
+		<ClipTrack Version="2">
+			<Track Version="3">
+				<Node Version="1">
+					<Properties Version="1">
+						<MZ.VideoCut.Id>track-a1</MZ.VideoCut.Id>
+						<TL.SQTrackShy>0</TL.SQTrackShy>
+						<MZ.TrackTargeted>1</MZ.TrackTargeted>
+					</Properties>
+				</Node>
+				<IsSyncLocked>true</IsSyncLocked>
+				<Index>0</Index>
+				<MediaType>80b8e3d5-6dca-4195-aefb-cb5f407ab009</MediaType>
+				<IsMuted>false</IsMuted>
+				<IsLocked>false</IsLocked>
+			</Track>
+			<ClipItems Version="3">
+				<TrackItems Version="1">
+					<TrackItem Index="0" ObjectRef="26"/>
+				</TrackItems>
+			</ClipItems>
+		</ClipTrack>
+	</AudioClipTrack>
+	<VideoClipTrackItem ObjectID="24" ClassID="368b0406-29e3-4923-9fcd-094fbf9a1089" Version="5">
+		<ClipTrackItem Version="4">
+			<TrackItem Version="3">
+				<Node Version="1">
+					<Properties Version="1">
+						<MZ.VideoCut.Id>clip-v1</MZ.VideoCut.Id>
+						<MZ.VideoCut.Label>3</MZ.VideoCut.Label>
+					</Properties>
+				</Node>
+				<End>254016000000</End>
+				<Start>0</Start>
+			</TrackItem>
+			<ComponentOwner Version="1">
+				<Components ObjectRef="31"/>
+			</ComponentOwner>
+			<IsMuted>false</IsMuted>
+			<SubClip ObjectRef="27"/>
+		</ClipTrackItem>
+	</VideoClipTrackItem>
+	<VideoClipTrackItem ObjectID="25" ClassID="368b0406-29e3-4923-9fcd-094fbf9a1089" Version="5">
+		<ClipTrackItem Version="4">
+			<TrackItem Version="3">
+				<Node Version="1">
+					<Properties Version="1">
+						<MZ.VideoCut.Id>clip-v2</MZ.VideoCut.Id>
+						<MZ.VideoCut.Label>0</MZ.VideoCut.Label>
+					</Properties>
+				</Node>
+				<End>508032000000</End>
+				<Start>254016000000</Start>
+			</TrackItem>
+			<SubClip ObjectRef="28"/>
+		</ClipTrackItem>
+	</VideoClipTrackItem>
+	<AudioClipTrackItem ObjectID="26" ClassID="064ec682-9ba6-11d5-af2d-9ca32c7d6164" Version="6">
+		<ClipTrackItem Version="4">
+			<TrackItem Version="3">
+				<Node Version="1">
+					<Properties Version="1">
+						<MZ.VideoCut.Id>clip-a1</MZ.VideoCut.Id>
+					</Properties>
+				</Node>
+				<End>254016000000</End>
+				<Start>0</Start>
+			</TrackItem>
+			<SubClip ObjectRef="29"/>
+		</ClipTrackItem>
+	</AudioClipTrackItem>
+	<SubClip ObjectID="27" ClassID="e0c58dc9-dbdd-4166-aef7-5db7e3f22e84" Version="3">
+		<MasterClip ObjectURef="master-media-interview"/>
+		<Clip ObjectRef="32"/>
+		<Name>interview.mp4</Name>
+	</SubClip>
+	<SubClip ObjectID="28" ClassID="e0c58dc9-dbdd-4166-aef7-5db7e3f22e84" Version="3">
+		<MasterClip ObjectURef="master-media-interview"/>
+		<Clip ObjectRef="33"/>
+		<Name>interview.mp4</Name>
+	</SubClip>
+	<SubClip ObjectID="29" ClassID="e0c58dc9-dbdd-4166-aef7-5db7e3f22e84" Version="3">
+		<MasterClip ObjectURef="master-media-interview"/>
+		<Clip ObjectRef="34"/>
+		<Name>interview.mp4</Name>
+	</SubClip>
+	<VideoTransitionTrackItem ObjectID="30" ClassID="3eeaed31-f78e-4144-b8e8-077656517181" Version="6">
+		<TransitionTrackItem Version="3">
+			<TrackItem Version="3">
+				<Node Version="1">
+					<Properties Version="1">
+						<MZ.VideoCut.Id>tr-dissolve</MZ.VideoCut.Id>
+					</Properties>
+				</Node>
+				<Start>190512000000</Start>
+				<End>317520000000</End>
+			</TrackItem>
+			<Alignment>63504000000</Alignment>
+			<DisplayName>Cross Dissolve</DisplayName>
+			<MatchName>AE.ADBE Cross Dissolve New</MatchName>
+			<HasOutgoingClip>true</HasOutgoingClip>
+			<HasIncomingClip>true</HasIncomingClip>
+		</TransitionTrackItem>
+	</VideoTransitionTrackItem>
+	<VideoComponentChain ObjectID="31" ClassID="0970e08a-f58f-4108-b29a-1a717b8e12e2" Version="1">
+		<ComponentChain Version="2">
+			<Components Version="1">
+				<Component Index="0" ObjectRef="35"/>
+				<Component Index="1" ObjectRef="36"/>
+			</Components>
+		</ComponentChain>
+	</VideoComponentChain>
+	<VideoClip ObjectID="32" ClassID="9308dbef-2440-4acb-9ab2-953b9a4e82ec" Version="9">
+		<Clip Version="14">
+			<OutPoint>254016000000</OutPoint>
+			<InPoint>0</InPoint>
+			<Source ObjectRef="13"/>
+			<FrameRate>8467200000</FrameRate>
+		</Clip>
+	</VideoClip>
+	<VideoClip ObjectID="33" ClassID="9308dbef-2440-4acb-9ab2-953b9a4e82ec" Version="9">
+		<Clip Version="14">
+			<OutPoint>1016064000000</OutPoint>
+			<InPoint>0</InPoint>
+			<PlaybackSpeed>2.</PlaybackSpeed>
+			<PlayBackwards>true</PlayBackwards>
+			<Source ObjectRef="13"/>
+		</Clip>
+	</VideoClip>
+	<AudioClip ObjectID="34" ClassID="b8830d03-de02-41ee-84ec-fe566dc70cd9" Version="8">
+		<Clip Version="14">
+			<OutPoint>254016000000</OutPoint>
+			<InPoint>0</InPoint>
+			<Source ObjectRef="14"/>
+		</Clip>
+	</AudioClip>
+	<VideoFilterComponent ObjectID="35" ClassID="d10da199-beea-4dd1-b941-ed3a78766d50" Version="9">
+		<Component Version="6">
+			<Node Version="1">
+				<Properties Version="1">
+					<MZ.VideoCut.Id>fx-opacity</MZ.VideoCut.Id>
+				</Properties>
+			</Node>
+			<Params Version="1">
+				<Param Index="0" ObjectRef="37"/>
+			</Params>
+			<DisplayName>Opacity</DisplayName>
+			<Bypass>false</Bypass>
+		</Component>
+		<MatchName>AE.ADBE Opacity</MatchName>
+	</VideoFilterComponent>
+	<VideoFilterComponent ObjectID="36" ClassID="d10da199-beea-4dd1-b941-ed3a78766d50" Version="9">
+		<Component Version="6">
+			<Node Version="1">
+				<Properties Version="1">
+					<MZ.VideoCut.Id>fx-motion</MZ.VideoCut.Id>
+				</Properties>
+			</Node>
+			<Params Version="1">
+				<Param Index="0" ObjectRef="38"/>
+				<Param Index="1" ObjectRef="39"/>
+			</Params>
+			<DisplayName>Motion</DisplayName>
+			<Bypass>false</Bypass>
+		</Component>
+		<MatchName>AE.ADBE Motion</MatchName>
+	</VideoFilterComponent>
+	<VideoComponentParam ObjectID="37" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="8">
+		<Name>Opacity</Name>
+		<CurrentValue>50.</CurrentValue>
+		<Keyframes>127008000000,80.,0,0,0,0,0,0;200000000000,20.,4,0,0,0,0,0;</Keyframes>
+	</VideoComponentParam>
+	<PointComponentParam ObjectID="38" ClassID="ca81d347-309b-44d2-acc7-1c572efb973c" Version="4">
+		<Name>Position</Name>
+		<CurrentValue>100.:200.</CurrentValue>
+	</PointComponentParam>
+	<VideoComponentParam ObjectID="39" ClassID="fe47129e-6c94-4fc0-95d5-c056a517aaf3" Version="8">
+		<Name>Scale</Name>
+		<CurrentValue>80.</CurrentValue>
+	</VideoComponentParam>
+	<Markers ObjectID="40" ClassID="bee50706-b524-416c-9f03-b596ce5f6866" Version="4">
+		<Markers Version="1">
+			<Marker Index="0">
+				<First>marker-cue</First>
+				<Second ObjectRef="41"/>
+			</Marker>
+		</Markers>
+	</Markers>
+	<Marker ObjectID="41" ClassID="a45508e0-3ff7-4d04-90a7-2e0dfff4c910" Version="3">
+		<DVAMarker>{"DVAMarker":{"mComment":"note","mCuePointList":[{"mKey":"keywordExtDVAv1_marker-cue","mValue":"{\"color\":4281740498}"}],"mMarkerID":"marker-cue","mName":"cue","mStartTime":{"ticks":127008000000},"mType":"Chapter"}}</DVAMarker>
+	</Marker>
+	<Link ObjectID="42" ClassID="149d4ea5-a7d4-4b34-9bb7-16d783904bf2" Version="1">
+		<TrackItemGroup Version="1">
+			<TrackItems Version="1">
+				<TrackItem Index="0" ObjectRef="24"/>
+				<TrackItem Index="1" ObjectRef="26"/>
+			</TrackItems>
+		</TrackItemGroup>
+	</Link>
+	<LumetriColor ObjectID="900" ClassID="00000000-0000-0000-0000-000000000099" Version="1">
+		<Look>unsupported-grade</Look>
+	</LumetriColor>
+</PremiereData>
