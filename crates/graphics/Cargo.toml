@@ -1,0 +1,13 @@
+[package]
+name = "videocut-graphics"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Titles, lower thirds, captions, and subtitle interchange for VideoCut"
+
+[dependencies]
+videocut-model = { path = "../model" }
+thiserror.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
