@@ -1,0 +1,5 @@
+{
+  "name": "videocut",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"]
+}
