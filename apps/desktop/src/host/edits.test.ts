@@ -2,6 +2,7 @@ import { TICKS_PER_SECOND, type Project, type Sequence, type Track } from "@vide
 import { describe, expect, it } from "vitest";
 import { seconds } from "../model/timecode";
 import {
+  importMedia,
   moveClips,
   overwrite,
   razorAtPlayhead,
@@ -187,6 +188,32 @@ describe("trim, roll, slip, slide, move, delete, overwrite", () => {
       ["a", seconds(5), seconds(10)],
     ]);
     expect(clips[1]!.mediaId).toBe("media-1");
+  });
+
+  it("keeps probed stream info when media is imported", () => {
+    const project = {
+      id: "p",
+      name: "n",
+      bins: [],
+      sequences: [],
+      media: [],
+    };
+    const next = importMedia(project, [
+      {
+        id: "media-probe",
+        name: "clip.mp4",
+        path: "C:/clip.mp4",
+        durationTicks: 10,
+        video: { width: 1920, height: 1080, fps: { num: 24, den: 1 }, codec: "h264" },
+      },
+    ]);
+    expect(next.media[0]).toMatchObject({
+      id: "media-probe",
+      path: "C:/clip.mp4",
+      durationTicks: 10,
+      video: { width: 1920, codec: "h264" },
+    });
+    expect(next.bins[0]?.children?.[0]?.kind).toBe("clip");
   });
 
   it("uses one second of ticks", () => {

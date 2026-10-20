@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import type { ExchangeFormat } from "../host/desktop-bridge";
 import { commands } from "../host/edits";
 import type { Editor } from "../host/use-editor";
 
@@ -33,10 +34,17 @@ export function MenuBar({ editor, onExport }: { editor: Editor; onExport: () => 
         { label: "開く", onSelect: () => void editor.open() },
         { label: "保存", shortcut: "Ctrl+S", onSelect: () => void editor.save(false) },
         { label: "名前を付けて保存", onSelect: () => void editor.save(true) },
+        { label: ".prproj を開く", onSelect: () => editor.openPrproj() },
+        { label: ".prproj を保存", onSelect: () => editor.savePrproj() },
         { label: "メディアを読み込み", onSelect: () => void editor.importMedia() },
         { label: "書き出し", onSelect: onExport },
         { label: "終了", onSelect: editor.quit },
       ],
+    },
+    {
+      id: "exchange",
+      label: "交換",
+      items: exchangeItems(editor),
     },
     {
       id: "edit",
@@ -134,4 +142,30 @@ export function MenuBar({ editor, onExport }: { editor: Editor; onExport: () => 
       ))}
     </header>
   );
+}
+
+function exchangeItems(editor: Editor): Item[] {
+  const formats: ExchangeFormat[] = ["otio", "fcpxml", "edl"];
+  return formats.flatMap((format) => {
+    const label = formatLabel(format);
+    return [
+      { label: `${label} を開く`, onSelect: () => editor.openExchange(format) },
+      { label: `${label} を書き出す`, onSelect: () => editor.saveExchange(format) },
+    ];
+  });
+}
+
+function formatLabel(format: ExchangeFormat): string {
+  switch (format) {
+    case "otio":
+      return "OTIO";
+    case "fcpxml":
+      return "FCPXML";
+    case "edl":
+      return "EDL";
+    default: {
+      const unknown: never = format;
+      return unknown;
+    }
+  }
 }

@@ -1,12 +1,29 @@
-import { useState } from "react";
-import type { Sequence } from "@videocut/model";
+import { useEffect, useMemo, useState } from "react";
+import type { EffectInstance, Sequence } from "@videocut/model";
+import {
+  editClip,
+  editSequence,
+  projectCommand,
+  replaceClipEffects,
+  replaceTransition,
+  transitionNearClip,
+} from "../host/document";
 import { commands } from "../host/edits";
-import { AUDIO_EXPORTS, COLOR_EXPORTS, EFFECTS_EXPORTS, GRAPHICS_EXPORTS, resolvePanel } from "../host/panels";
-import type { PanelHostProps } from "../host/panel-props";
 import { findClip } from "../host/playhead";
 import type { Editor } from "../host/use-editor";
-import { labelColor } from "../ui/colors";
-import { audioModule, colorModule, effectsModule, graphicsModule } from "../ui/modules";
+import {
+  AudioMixer,
+  ColorPanel,
+  EffectControls,
+  GraphicsPanel,
+  mixerStateFromSequence,
+  stripViews,
+  updateCaptionText,
+  updateCaptionTiming,
+  withLowerThirdText,
+  withTitleText,
+  type MixerState,
+} from "../ui/modules";
 
 const TABS = [
   { id: "effects", label: "エフェクト" },
@@ -20,19 +37,8 @@ type TabId = (typeof TABS)[number]["id"];
 export function SidePanels({ editor }: { editor: Editor }) {
   const [tab, setTab] = useState<TabId>("effects");
   const sequence = editor.project.sequences.find((item) => item.id === editor.session.activeSequenceId) ?? null;
-  const host: PanelHostProps = {
-    project: editor.project,
-    sequence,
-    sequenceId: editor.session.activeSequenceId,
-    tool: editor.session.tool,
-    playheadTicks: editor.session.playheadTicks,
-    selectedClipIds: editor.session.selectedClipIds,
-    markInTicks: editor.session.programMarkIn,
-    markOutTicks: editor.session.programMarkOut,
-    execute: editor.execute,
-    setPlayhead: editor.setPlayhead,
-    setSelectedClipIds: editor.setSelected,
-  };
+  const selectedId = editor.session.selectedClipIds[0] ?? null;
+  const hit = sequence && selectedId ? findClip(sequence, selectedId) : null;
   return (
     <section className="panel side" data-testid="side-panels">
       <div className="tabs" role="tablist">
@@ -51,114 +57,144 @@ export function SidePanels({ editor }: { editor: Editor }) {
         ))}
       </div>
       <div className="side__body" role="tabpanel">
-        {tab === "effects" ? <Effects host={host} module={effectsModule} /> : null}
-        {tab === "color" ? <Color host={host} module={colorModule} /> : null}
-        {tab === "audio" ? <Audio host={host} module={audioModule} sequence={sequence} /> : null}
-        {tab === "graphics" ? <Graphics host={host} module={graphicsModule} sequence={sequence} /> : null}
+        {tab === "effects" ? <Effects editor={editor} sequence={sequence} /> : null}
+        {tab === "color" ? <Color editor={editor} sequence={sequence} /> : null}
+        {tab === "audio" ? <Audio editor={editor} sequence={sequence} /> : null}
+        {tab === "graphics" ? (
+          <GraphicsPanel
+            sequence={sequence}
+            selectedClip={hit?.clip ?? null}
+            onTitleTextChange={(clipId, text) => {
+              if (!sequence) return;
+              editor.execute(
+                projectCommand("タイトル", (project) =>
+                  editClip(project, sequence.id, clipId, (clip) => {
+                    const edited = withTitleText(clip, text);
+                    return edited.ok ? edited.value : null;
+                  }),
+                ),
+              );
+            }}
+            onLowerThirdChange={(clipId, primary, secondary) => {
+              if (!sequence) return;
+              editor.execute(
+                projectCommand("ローワーサード", (project) =>
+                  editClip(project, sequence.id, clipId, (clip) => {
+                    const edited = withLowerThirdText(clip, primary, secondary);
+                    return edited.ok ? edited.value : null;
+                  }),
+                ),
+              );
+            }}
+            onCaptionTextChange={(captionId, text) => {
+              if (!sequence) return;
+              editor.execute(
+                projectCommand("字幕", (project) =>
+                  editSequence(project, sequence.id, (current) => {
+                    const edited = updateCaptionText(current, captionId, text);
+                    return edited.ok ? edited.value : null;
+                  }),
+                ),
+              );
+            }}
+            onCaptionTimingChange={(captionId, startTicks, endTicks) => {
+              if (!sequence) return;
+              editor.execute(
+                projectCommand("字幕", (project) =>
+                  editSequence(project, sequence.id, (current) => {
+                    const edited = updateCaptionTiming(current, captionId, startTicks, endTicks);
+                    return edited.ok ? edited.value : null;
+                  }),
+                ),
+              );
+            }}
+          />
+        ) : null}
       </div>
     </section>
   );
 }
 
-function Effects({ host, module }: { host: PanelHostProps; module: object }) {
-  const External = resolvePanel(module, EFFECTS_EXPORTS);
-  if (External) return <External {...host} />;
-  const sequence = host.sequence;
-  const clip = sequence && host.selectedClipIds[0] ? findClip(sequence, host.selectedClipIds[0])?.clip : null;
+function Effects({ editor, sequence }: { editor: Editor; sequence: Sequence | null }) {
+  const clipId = editor.session.selectedClipIds[0];
+  const hit = sequence && clipId ? findClip(sequence, clipId) : null;
+  if (!sequence || !hit) return <p className="empty">クリップを選択</p>;
+  const transition = transitionNearClip(hit.track, hit.clip);
   return (
-    <div className="fallback" data-testid="effects-fallback">
-      <h2>エフェクトコントロール</h2>
-      {clip ? <p>{clip.name}</p> : <p className="empty">クリップを選択</p>}
-      <ul>
-        {(clip?.effects ?? []).map((effect) => (
-          <li key={effect.id}>
-            <label>
-              <input
-                type="checkbox"
-                checked={effect.enabled}
-                onChange={(event) => {
-                  if (!host.sequenceId || !clip) return;
-                  host.execute(commands.toggleEffect(host.sequenceId, clip.id, effect.id, event.target.checked));
-                }}
-              />
-              {effect.effectId}
-            </label>
-          </li>
-        ))}
-      </ul>
-      {clip && (clip.effects ?? []).length === 0 ? <p className="empty">エフェクトなし</p> : null}
-    </div>
+    <EffectControls
+      clip={hit.clip}
+      playheadTicks={editor.session.playheadTicks}
+      transition={transition}
+      onEffectsChange={(effects) => {
+        editor.execute(projectCommand("エフェクト", (project) => replaceClipEffects(project, sequence.id, hit.clip.id, effects)));
+      }}
+      onTransitionChange={(next) => {
+        editor.execute(projectCommand("トランジション", (project) => replaceTransition(project, sequence.id, next)));
+      }}
+    />
   );
 }
 
-function Color({ host, module }: { host: PanelHostProps; module: object }) {
-  const External = resolvePanel(module, COLOR_EXPORTS);
-  if (External) return <External {...host} />;
-  const sequence = host.sequence;
-  const clip = sequence && host.selectedClipIds[0] ? findClip(sequence, host.selectedClipIds[0])?.clip : null;
+function Color({ editor, sequence }: { editor: Editor; sequence: Sequence | null }) {
+  const clipId = editor.session.selectedClipIds[0];
+  const hit = sequence && clipId ? findClip(sequence, clipId) : null;
+  if (!sequence || !hit) return <p className="empty">クリップを選択</p>;
+  const write = (effects: EffectInstance[]) => {
+    editor.execute(projectCommand("カラー", (project) => replaceClipEffects(project, sequence.id, hit.clip.id, effects)));
+  };
   return (
-    <div className="fallback" data-testid="color-fallback">
-      <h2>カラー</h2>
-      {clip ? (
-        <div className="swatch" style={{ background: labelColor(clip.labelColor) }}>
-          <span>{clip.name}</span>
-        </div>
-      ) : (
-        <p className="empty">クリップを選択</p>
-      )}
-      <p className="hint">ホイールとスコープはカラーパネルが接続されると表示されます。</p>
-    </div>
+    <ColorPanel
+      effects={hit.clip.effects ?? []}
+      onChange={(effect) => {
+        const effects = hit.clip.effects ?? [];
+        const next = effects.some((item) => item.id === effect.id)
+          ? effects.map((item) => (item.id === effect.id ? effect : item))
+          : [...effects, effect];
+        write(next);
+      }}
+      onAdd={(effect) => write([...(hit.clip.effects ?? []), effect])}
+    />
   );
 }
 
-function Audio({ host, module, sequence }: { host: PanelHostProps; module: object; sequence: Sequence | null }) {
-  const External = resolvePanel(module, AUDIO_EXPORTS);
-  if (External) return <External {...host} />;
+function Audio({ editor, sequence }: { editor: Editor; sequence: Sequence | null }) {
+  const [mixer, setMixer] = useState<MixerState>({ masterGainDb: 0, strips: [] });
+  useEffect(() => {
+    if (!sequence) return;
+    setMixer((current) => {
+      const fresh = mixerStateFromSequence(sequence);
+      return {
+        masterGainDb: current.masterGainDb,
+        strips: fresh.strips.map((strip) => current.strips.find((item) => item.trackId === strip.trackId) ?? strip),
+      };
+    });
+  }, [sequence]);
+  const strips = useMemo(() => (sequence ? stripViews(sequence, mixer, {}) : []), [sequence, mixer]);
+  if (!sequence) return <p className="empty">シーケンスがありません</p>;
   return (
-    <div className="fallback" data-testid="audio-fallback">
-      <h2>オーディオ</h2>
-      {(sequence?.audioTracks ?? []).map((track) => (
-        <div className="mixer-row" key={track.id}>
-          <span>A{track.index + 1}</span>
-          <button
-            type="button"
-            aria-pressed={track.muted}
-            onClick={() => host.sequenceId && host.execute(commands.patchTrack(host.sequenceId, track.id, { muted: !track.muted }))}
-          >
-            {track.muted ? "ミュート中" : "ミュート"}
-          </button>
-        </div>
-      ))}
-      {(sequence?.audioTracks ?? []).length === 0 ? <p className="empty">オーディオトラックなし</p> : null}
-    </div>
-  );
-}
-
-function Graphics({ host, module, sequence }: { host: PanelHostProps; module: object; sequence: Sequence | null }) {
-  const External = resolvePanel(module, GRAPHICS_EXPORTS);
-  if (External) return <External {...host} />;
-  const titles = [...(sequence?.videoTracks ?? [])].flatMap((track) => track.clips.filter((clip) => clip.kind === "title"));
-  return (
-    <div className="fallback" data-testid="graphics-fallback">
-      <h2>グラフィック</h2>
-      {titles.map((clip) => (
-        <p key={clip.id}>{clip.name}</p>
-      ))}
-      <ul>
-        {(sequence?.captions ?? []).map((caption) => (
-          <li key={caption.id}>
-            <input
-              aria-label="キャプション"
-              defaultValue={caption.text}
-              onBlur={(event) => {
-                if (!host.sequenceId || event.target.value === caption.text) return;
-                host.execute(commands.caption(host.sequenceId, caption.id, event.target.value));
-              }}
-            />
-          </li>
-        ))}
-      </ul>
-      {titles.length === 0 && (sequence?.captions ?? []).length === 0 ? <p className="empty">タイトルもキャプションもありません</p> : null}
-    </div>
+    <AudioMixer
+      strips={strips}
+      masterGainDb={mixer.masterGainDb}
+      onMuteChange={(trackId, muted) => editor.execute(commands.patchTrack(sequence.id, trackId, { muted }))}
+      onSoloChange={(trackId, solo) => {
+        setMixer((current) => ({
+          ...current,
+          strips: current.strips.map((strip) => (strip.trackId === trackId ? { ...strip, solo } : strip)),
+        }));
+      }}
+      onFaderChange={(trackId, faderDb) => {
+        setMixer((current) => ({
+          ...current,
+          strips: current.strips.map((strip) => (strip.trackId === trackId ? { ...strip, faderDb } : strip)),
+        }));
+      }}
+      onPanChange={(trackId, pan) => {
+        setMixer((current) => ({
+          ...current,
+          strips: current.strips.map((strip) => (strip.trackId === trackId ? { ...strip, pan } : strip)),
+        }));
+      }}
+      onMasterGainChange={(masterGainDb) => setMixer((current) => ({ ...current, masterGainDb }))}
+    />
   );
 }

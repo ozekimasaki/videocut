@@ -1,4 +1,4 @@
-import type { BinNode, Clip, ClipKind, Project, Sequence, Track } from "@videocut/model";
+import type { BinNode, Clip, ClipKind, MediaRef, Project, Sequence, Track } from "@videocut/model";
 import { newId } from "../model/ids";
 import { ticksPerFrame } from "../model/timecode";
 import type { EditCommand } from "./command-stack";
@@ -548,20 +548,20 @@ export function addMarker(project: Project, sequenceId: string, ticks: number, n
   }));
 }
 
-export function importMedia(
-  project: Project,
-  files: readonly { name: string; path: string; durationTicks: number }[],
-): Project {
+export function importMedia(project: Project, files: readonly MediaRef[]): Project {
   if (files.length === 0) return project;
   const media = [...project.media];
   const imported: BinNode[] = [];
   for (const file of files) {
-    const mediaId = newId("media");
+    const mediaId = file.id && !media.some((item) => item.id === file.id) ? file.id : newId("media");
     media.push({
       id: mediaId,
       name: file.name,
       path: file.path,
       durationTicks: file.durationTicks,
+      ...(file.video ? { video: file.video } : {}),
+      ...(file.audio ? { audio: file.audio } : {}),
+      ...(file.proxyPath ? { proxyPath: file.proxyPath } : {}),
     });
     imported.push({ id: newId("bin"), name: file.name, kind: "clip", mediaId });
   }
@@ -702,8 +702,7 @@ export const commands = {
   overwrite: (request: OverwriteRequest) => command("上書き", (project) => overwrite(project, request)),
   marker: (sequenceId: string, ticks: number, name = "マーカー") =>
     command("マーカー", (project) => addMarker(project, sequenceId, ticks, name)),
-  importMedia: (files: readonly { name: string; path: string; durationTicks: number }[]) =>
-    command("読み込み", (project) => importMedia(project, files)),
+  importMedia: (files: readonly MediaRef[]) => command("読み込み", (project) => importMedia(project, files)),
   renameProject: (name: string) => command("プロジェクト名", (project) => renameProject(project, name)),
   renameBin: (itemId: string, name: string) => command("名前の変更", (project) => renameBinItem(project, itemId, name)),
   addSequence: (name: string) => command("シーケンス", (project) => addSequence(project, name)),

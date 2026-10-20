@@ -1,15 +1,17 @@
-import * as audio from "@videocut/ui-audio";
-import * as color from "@videocut/ui-color";
-import * as effects from "@videocut/ui-effects";
-import * as exporter from "@videocut/ui-export";
-import * as graphics from "@videocut/ui-graphics";
-import * as project from "@videocut/ui-project";
-import * as timeline from "@videocut/ui-timeline";
-
-export const timelineModule: object = timeline;
-export const effectsModule: object = effects;
-export const colorModule: object = color;
-export const audioModule: object = audio;
-export const graphicsModule: object = graphics;
-export const projectModule: object = project;
-export const exportModule: object = exporter;
+export { AudioMixer, mixerStateFromSequence, stripViews } from "@videocut/ui-audio";
+export type { MixerState } from "@videocut/ui-audio";
+export { ColorPanel } from "@videocut/ui-color";
+export { EffectControls } from "@videocut/ui-effects";
+export { ExportPanel } from "@videocut/ui-export";
+export type { ExportRequest, MediaExporter } from "@videocut/ui-export";
+export {
+  GraphicsPanel,
+  updateCaptionText,
+  updateCaptionTiming,
+  withLowerThirdText,
+  withTitleText,
+} from "@videocut/ui-graphics";
+export { ProjectPanel } from "@videocut/ui-project";
+export type { MediaImporter } from "@videocut/ui-project";
+export { Timeline } from "@videocut/ui-timeline";
+export type { TimelineTool } from "@videocut/ui-timeline";

@@ -4,7 +4,19 @@ import { createDemoProject, createEmptyProject } from "../model/project-factory"
 import { ticksPerFrame } from "../model/timecode";
 import type { EditCommand } from "./command-stack";
 import { CommandStack } from "./command-stack";
-import { chooseMediaFiles, closeWindow, loadProjectFromDisk, setWindowTitle, storeProject } from "./desktop-bridge";
+import {
+  chooseMediaFiles,
+  closeWindow,
+  loadExchange,
+  loadProjectFromDisk,
+  loadPrproj,
+  probeMediaFile,
+  setWindowTitle,
+  storeExchange,
+  storeProject,
+  storePrproj,
+  type ExchangeFormat,
+} from "./desktop-bridge";
 import { commands } from "./edits";
 import { actionFromKey, nextShuttleSpeed, type KeyAction } from "./keyboard";
 import { clipsStartingAt, findClip, sequenceById, sequenceEnd } from "./playhead";
@@ -169,8 +181,10 @@ export function useEditor() {
     try {
       const files = await chooseMediaFiles();
       if (!files?.length) return;
-      execute(commands.importMedia(files));
-      setSession((current) => ({ ...current, message: `${files.length} 件読み込みました` }));
+      const probed = [];
+      for (const file of files) probed.push(await probeMediaFile(file.path));
+      execute(commands.importMedia(probed));
+      setSession((current) => ({ ...current, message: `${probed.length} 件読み込みました` }));
     } catch (error) {
       setSession((current) => ({ ...current, message: errorText(error) }));
     }
@@ -363,6 +377,12 @@ export function useEditor() {
     );
   }, [execute, stack]);
 
+  const runDocument = useCallback((action: () => Promise<void>) => {
+    void action().catch((error: unknown) => {
+      setSession((current) => ({ ...current, message: errorText(error) }));
+    });
+  }, []);
+
   return {
     project: shown,
     committed: project,
@@ -465,6 +485,34 @@ export function useEditor() {
     open,
     save,
     importMedia,
+    openPrproj() {
+      void runDocument(async () => {
+        const loaded = await loadPrproj();
+        if (!loaded) return;
+        replaceDocument(loaded.project, null, withWarnings(".prproj を開きました", loaded.warnings));
+      });
+    },
+    savePrproj() {
+      void runDocument(async () => {
+        const warnings = await storePrproj(stack.project);
+        if (!warnings) return;
+        setSession((current) => ({ ...current, message: withWarnings(".prproj を保存しました", warnings) }));
+      });
+    },
+    openExchange(format: ExchangeFormat) {
+      void runDocument(async () => {
+        const loaded = await loadExchange(format);
+        if (!loaded) return;
+        replaceDocument(loaded.project, null, withWarnings(`${format.toUpperCase()} を開きました`, loaded.warnings));
+      });
+    },
+    saveExchange(format: ExchangeFormat) {
+      void runDocument(async () => {
+        const warnings = await storeExchange(stack.project, format, sessionRef.current.activeSequenceId);
+        if (!warnings) return;
+        setSession((current) => ({ ...current, message: withWarnings(`${format.toUpperCase()} を書き出しました`, warnings) }));
+      });
+    },
     razorAtPlayhead,
     overwriteSource,
     quit() {
@@ -500,7 +548,14 @@ function stepFrame(session: SessionState, project: Project, direction: -1 | 1): 
 }
 
 function errorText(error: unknown): string {
-  return error instanceof Error ? error.message : "操作に失敗しました";
+  if (error instanceof Error && error.message) return error.message;
+  if (typeof error === "string" && error) return error;
+  return "操作に失敗しました";
+}
+
+function withWarnings(message: string, warnings: string[]): string {
+  if (warnings.length === 0) return message;
+  return `${message}（${warnings.slice(0, 2).join("、")}）`;
 }
 
 export type Editor = ReturnType<typeof useEditor>;
